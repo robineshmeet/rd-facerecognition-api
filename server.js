@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const knex = require('knex');
 const cors = require('cors');
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
@@ -13,7 +15,7 @@ const db = knex({
     client: 'pg',
     connection: {
       connectionString: process.env.DATABASE_URL,
-      ssl: false,
+      ssl: true,
     }
   });
 
@@ -22,16 +24,6 @@ const app = express();
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json());
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://still-hamlet-73992.herokuapp.com/");
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.header(
-  "Access-Control-Allow-Headers",
-  "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-  });
-app.options("https://still-hamlet-73992.herokuapp.com/", cors());
 
 
 port = process.env.PORT || 4000;
