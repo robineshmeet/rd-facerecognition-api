@@ -22,6 +22,17 @@ const app = express();
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json());
+app.use(function(req, res, next) {
+  res.header(Access-Control-Allow-Origin, 'https://still-hamlet-73992.herokuapp.com/');
+  res.header(Access-Control-Allow-Methods, GET,PUT,POST,DELETE);
+  res.header(
+  Access-Control-Allow-Headers,
+  Origin, X-Requested-With, Content-Type, Accept
+  );
+  next();
+  });
+app.options('https://still-hamlet-73992.herokuapp.com/', cors());
+
 
 port = process.env.PORT || 4000;
 
