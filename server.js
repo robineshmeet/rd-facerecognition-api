@@ -1,0 +1,40 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
+const knex = require('knex');
+const cors = require('cors');
+
+const register = require('./controllers/register');
+const signin = require('./controllers/signin');
+const profile = require('./controllers/profile');
+const image = require('./controllers/image');
+
+const db = knex({
+    client: 'pg',
+    connection: {
+      host : '127.0.0.1',
+      user : 'postgres',
+      password : '123456',
+      database : 'smart-brain'
+    }
+  });
+
+const app = express();
+
+app.use(cors())
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json());
+
+port = process.env.PORT || 4000;
+
+app.get('/',(req,res) =>res.json('Working'));
+app.post('/signin', signin.handleSignin(db, bcrypt))
+app.post('/register',(req,res)=>{ register.handleRegister(req, res, db, bcrypt) })
+app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db)})
+app.put('/image', (req, res) => { image.handleImage(req, res, db)})
+app.post('/imageurl', (req, res) => { image.handleApiCall(req, res)})
+
+
+app.listen(port,()=> {
+    console.log(`app is running in port:${port}`)
+})
