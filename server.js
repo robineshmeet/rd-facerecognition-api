@@ -10,6 +10,7 @@ const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
+const users = require('./controllers/users');
 
 const db = knex({
     client: 'pg',
@@ -24,7 +25,6 @@ const app = express();
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json());
-const users = require('./Controller/users');
 
 port = process.env.PORT || 4000;
 
